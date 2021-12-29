@@ -1,3 +1,2 @@
-const hello: string = 'word'
-
-console.log(hello)
+export * as auth from './auth'
+export * as defaults from './defaults'

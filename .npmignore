@@ -1,0 +1,10 @@
+.vscode
+.yarn
+.coverage
+.src
+.eslintrc.cjs
+.pnp.cjs
+.pnp.loader.mjs
+.swcrc
+.yarnrc.yml
+jest.config.cjs

@@ -17,11 +17,5 @@
     "keepClassNames": true,
     "loose": true
   },
-  "module": {
-    "type": "commonjs",
-    "strict": true,
-    "strictMode": true,
-    "lazy": false
-  },
   "sourceMaps": "inline"
 }

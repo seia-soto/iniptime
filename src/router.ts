@@ -1,7 +1,13 @@
 import { Got } from 'got'
 import cheerio from 'cheerio'
-import * as defaults from './defaults'
+import * as defaults from './defaults.js'
 
+/**
+ * Get briefing metadata from main page
+ *
+ * @param instance The got instance to use
+ * @returns Publicated router metadata you can see on main page
+ */
 export const getBriefing = async (
   instance: Got = defaults.instance
 ) => {

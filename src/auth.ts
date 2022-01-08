@@ -1,8 +1,8 @@
-import { Got } from 'got'
 import cheerio from 'cheerio'
+import { Got } from 'got'
+import { CookieJar } from 'tough-cookie'
 import qs from 'qs'
 import * as defaults from './defaults.js'
-import { CookieJar } from 'tough-cookie'
 
 export interface IIptimeLoginOption {
   routerName: string

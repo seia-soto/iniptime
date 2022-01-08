@@ -1,14 +1,14 @@
 {
   "license": "MIT",
   "name": "iniptime",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "built/index.js",
   "author": "Seia-Soto <seia@outlook.kr>",
   "packageManager": "yarn@3.1.1",
   "type": "module",
   "scripts": {
-    "build": "yarn build:bundle && yarn build:type",
-    "build:bundle": "swc ./src -d ./built -s",
+    "build": "yarn build:esm && yarn build:type",
+    "build:esm": "swc ./src -d ./built -s",
     "build:type": "tsc --emitDeclarationOnly --declaration --outDir ./built",
     "build:docs": "typedoc src/index.ts",
     "release": "standard-version",

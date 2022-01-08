@@ -28,7 +28,7 @@ jobs:
         run: yarn
 
       - name: Build
-        run: yarn dlx typedoc src/index.ts
+        run: yarn build:docs
         env:
           NODE_ENV: production
 

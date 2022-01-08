@@ -5,6 +5,7 @@ A JavaScript compatible ipTIME router controllable interface library.
 ## Table of Contents
 
 - [TypeDoc](https://iniptime.seia.io)
+- [Usage](#usage)
 - [Environment](#environment)
 - [LICENSE](#license)
 
@@ -14,6 +15,46 @@ Note that I build this library with following router:
 
 - `ax3004i` (EFM ipTIME ax3004ITL)
 - v14.11.0 from official channel
+
+# Usage
+
+## Authentication
+
+ipTIME routers support two authentication method: `HTTP Basic Auth` and `Session`.
+
+### HTTP Basic Auth
+
+You can extend default `got` instance from `iniptime.defaults` module to apply router username and password.
+
+```ts
+import { defaults } from 'iniptime'
+
+const instance = defaults.instance.extend({
+  username: '',
+  password: ''
+})
+```
+
+### Session
+
+`iniptime` supports session authentication with `got` and `tough-cookie` library.
+
+```ts
+import { CookieJar } from 'tough-cookie'
+import { auth, defaults } from 'iniptime'
+
+const cookieJar = new CookieJar()
+
+const instance = defaults.instance.extend({
+  cookieJar
+})
+
+// Update session cookie with `auth.setSessionToken`.
+await auth.setSessionToken(
+  cookieJar,
+  await auth.getLoginToken(instance)
+)
+```
 
 # LICENSE
 

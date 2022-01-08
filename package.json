@@ -15,6 +15,10 @@
     "lint": "eslint ./src --ext .js,.ts",
     "test": "ava"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/seia-soto/iniptime.git"
+  },
   "ava": {
     "extensions": {
       "ts": "module"

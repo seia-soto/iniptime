@@ -8,3 +8,5 @@
 .swcrc
 .yarnrc.yml
 jest.config.cjs
+/docs
+/src

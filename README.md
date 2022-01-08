@@ -4,9 +4,8 @@ A JavaScript compatible ipTIME router controllable interface library.
 
 ## Table of Contents
 
+- [TypeDoc](https://iniptime.seia.io)
 - [Environment](#environment)
-- [Installation](#installation)
-- [API](#api)
 - [LICENSE](#license)
 
 # Environment
@@ -15,14 +14,6 @@ Note that I build this library with following router:
 
 - `ax3004i` (EFM ipTIME ax3004ITL)
 - v14.11.0 from official channel
-
-# Installation
-
-I won't provide NPM release, so you need to install the library from GitHub intead.
-
-# API
-
-> Preparing
 
 # LICENSE
 

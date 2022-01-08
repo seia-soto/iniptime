@@ -1,4 +1,5 @@
-built
+/docs
+/built
 .DS_Store
 
 # Logs

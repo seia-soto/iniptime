@@ -1,7 +1,35 @@
-import got from 'got'
+import got, { BeforeRequestHook } from 'got'
 
-export const host = '192.168.0.1'
-export const prefixUrl = `http://${host}` // proto + host
+export namespace hooks {
+  export const pretendRefererBeforeRequest: BeforeRequestHook = opts => {
+    if (
+      opts.headers.referer &&
+      typeof opts.headers.referer === 'string' &&
+      !opts.headers.referer.startsWith('http:')
+    ) {
+      opts.headers.referer = new URL(opts.url ?? '').origin + '/' + opts.headers.referer
+    }
+  }
+
+  export const addHostBeforeRequest: BeforeRequestHook = opts => {
+    if (
+      !opts.headers.host
+    ) {
+      opts.headers.host = new URL(opts.url ?? '').host
+    }
+  }
+
+  export const addOriginBeforeRequest: BeforeRequestHook = opts => {
+    if (
+      !!opts.body &&
+      typeof opts.headers.origin === 'undefined'
+    ) {
+      opts.headers.origin = new URL(opts.url ?? '').origin
+    }
+  }
+}
+
+export const prefixUrl = 'http://192.168.0.1'
 
 export const instance = got.extend({
   prefixUrl,
@@ -9,9 +37,15 @@ export const instance = got.extend({
     // The following headers are from macOS Chrome 96.0.4664.110 Apple Silicon release
     Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'Cache-Control': 'no-cache',
-    Host: host, // Host check is present on the system
     Pragma: 'no-cache',
     'User-Agent': 'seia-soto/iniptime controller'
+  },
+  hooks: {
+    beforeRequest: [
+      hooks.pretendRefererBeforeRequest,
+      hooks.addHostBeforeRequest,
+      hooks.addOriginBeforeRequest
+    ]
   }
 })
 
@@ -35,4 +69,9 @@ export namespace URIs {
    * The captcha generator of the router
    */
   export const captchaView = 'sess-bin/captcha.cgi'
+
+  /**
+   * The authorized main page of the router
+   */
+  export const mainView = 'sess-bin/login.cgi'
 }

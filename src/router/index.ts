@@ -1,8 +1,11 @@
 import { Got } from 'got'
 import cheerio from 'cheerio'
 import qs from 'qs'
-import * as defaults from './defaults.js'
-import { parseDatetime } from './utils.js'
+import * as defaults from '../defaults.js'
+import { parseDatetime } from '../utils.js'
+
+// export all
+export * as network from './network.js'
 
 /**
  * Get briefing metadata from main page
@@ -108,12 +111,12 @@ export const getStatus = async (
         // Referer check is present on the system
         referer: defaults.URIs.serviceView +
           `?${qs.stringify({
-            tmenu: defaults.services.EServiceViewType.FRAME,
+            tmenu: defaults.services.EServiceCategory.FRAME,
             smenu: 'info'
           })}`
       },
       searchParams: {
-        tmenu: defaults.services.EServiceViewType.DATA,
+        tmenu: defaults.services.EServiceCategory.DATA,
         smenu: defaults.services.EServiceType.SYSTEM_STATUS
       }
     })

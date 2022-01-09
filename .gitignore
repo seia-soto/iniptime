@@ -1,5 +1,6 @@
 /docs
 /built
+*.html
 .DS_Store
 
 # Logs

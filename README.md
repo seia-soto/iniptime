@@ -45,9 +45,9 @@ We're currently supporting following features:
         - [x] DHCP server status and internal IP range
         - [x] System uptime and version
         - [ ] Remote management status and port
-      - [ ] Internet connection settings
-        - [ ] Type of connection and status
-        - [ ] External IP and connection metadata
+      - [x] Internet connection settings
+        - [x] Type of connection and status (*Dynamic wan mode only supported, yet*)
+        - [x] External IP and connection metadata
         - [ ] MAC address search result from local network
       - [ ] Wireless AP settings
         - [ ] Wireless AP status and metadata

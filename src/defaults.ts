@@ -83,13 +83,15 @@ export namespace URIs {
 
 /* eslint-disable no-unused-vars */
 export namespace services {
-  export enum EServiceViewType {
+  export enum EServiceCategory {
     DATA = 'iframe',
-    FRAME = 'system'
+    FRAME = 'system',
+    NETCONF = 'netconf'
   }
 
   export enum EServiceType {
-    SYSTEM_STATUS = 'system_info_status'
+    SYSTEM_STATUS = 'system_info_status',
+    NETWORK_CONFIG = 'wansetup'
   }
 }
 /* eslint-enable no-unused-vars */

@@ -4,7 +4,7 @@ import {
   auth,
   defaults,
   router
-} from '../src'
+} from '../../src'
 
 const cookieJar = new CookieJar()
 const instance = defaults.instance.extend({
@@ -25,6 +25,10 @@ test('get information from basic preferences', async t => {
   t.log(
     'getStatus',
     await router.getStatus(instance)
+  )
+  t.log(
+    'getConfiguration',
+    await router.network.getConfiguration(instance)
   )
 
   t.pass()

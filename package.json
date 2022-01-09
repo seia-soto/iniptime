@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "name": "iniptime",
-  "version": "0.0.3-alpha.1",
+  "version": "0.0.3-alpha.2",
   "main": "built/index.js",
   "author": "Seia-Soto <seia@outlook.kr>",
   "packageManager": "yarn@3.1.1",

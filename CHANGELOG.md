@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3-alpha.2](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.1...v0.0.3-alpha.2) (2022-01-09)
+
+
+### Features
+
+* read network config on dynamic ip mode ([6f3c918](https://github.com/seia-soto/iniptime/commit/6f3c918a316af57112ddbb484bf72ea4cfef60f3))
+
 ### [0.0.3-alpha.1](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.0...v0.0.3-alpha.1) (2022-01-09)
 
 ### 0.0.3-alpha.0 (2022-01-09)

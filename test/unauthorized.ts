@@ -10,9 +10,9 @@ const instance = defaults.instance.extend({
   cookieJar
 })
 
-test('getLoginToken', async t => {
-  const token = await auth.getLoginToken(instance)
+test('getLoginOptions', async t => {
+  const opts = await auth.getLoginOptions(instance)
 
-  t.log(token)
-  t.is(token.length > 1, true)
+  t.log(opts)
+  t.is(opts.routerIdentifier.length > 0, true)
 })

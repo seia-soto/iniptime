@@ -39,20 +39,88 @@ const instance = defaults.instance.extend({
 
 `iniptime` supports session authentication with `got` and `tough-cookie` library.
 
+**Session with default credentials**
+
 ```ts
 import { CookieJar } from 'tough-cookie'
 import { auth, defaults } from 'iniptime'
 
 const cookieJar = new CookieJar()
-
 const instance = defaults.instance.extend({
   cookieJar
 })
 
+const loginOptions = await auth.getLoginToken(instance)
+
 // Update session cookie with `auth.setSessionToken`.
 await auth.setSessionToken(
   cookieJar,
-  await auth.getLoginToken(instance)
+  await auth.getLoginToken(instance) // Use default option for token generation.
+)
+```
+
+**Session with username and password**
+
+```ts
+import { CookieJar } from 'tough-cookie'
+import { auth, defaults } from 'iniptime'
+
+const cookieJar = new CookieJar()
+const instance = defaults.instance.extend({
+  cookieJar
+})
+
+const loginOptions = await auth.getLoginToken(instance)
+
+// Update session cookie with `auth.setSessionToken`.
+await auth.setSessionToken(
+  cookieJar,
+  await auth.getLoginToken(instance, {
+    initStatus: loginOptions.initStatus,
+    'username',
+    'password',
+    defaultPassword: loginOptions.defaultPassword
+  })
+)
+```
+
+**Session with captcha**
+
+```ts
+import { CookieJar } from 'tough-cookie'
+import { auth, defaults } from 'iniptime'
+
+const cookieJar = new CookieJar()
+const instance = defaults.instance.extend({
+  cookieJar
+})
+
+const loginOptions = await auth.getLoginToken(instance)
+
+if (!loginOptions.isCaptchaEnabled) {
+  throw new Error('Captcha is not enabled!')
+}
+
+// Get image URL from the router.
+const {
+  token,
+  imageURL // /captcha/TOKEN.gif
+} = await auth.getCaptchaImage(instance)
+
+// Update session cookie with `auth.setSessionToken`.
+await auth.setSessionToken(
+  cookieJar,
+  await auth.getLoginToken(instance, {
+    initStatus: loginOptions.initStatus,
+    'username',
+    'password',
+    defaultPassword: loginOptions.defaultPassword,
+    // Provide captcha information.
+    captcha: {
+      token,
+      code: '' // Put solved captcha-code here.
+    }
+  })
 )
 ```
 

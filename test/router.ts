@@ -11,15 +11,21 @@ const instance = defaults.instance.extend({
   cookieJar
 })
 
-test('getBriefing', async t => {
+test('get information from basic preferences', async t => {
   // login
   await auth.setSessionToken(
     cookieJar,
     await auth.getLoginToken(instance)
   )
 
-  const brief = await router.getBriefing(instance)
+  t.log(
+    'getBriefing',
+    await router.getBriefing(instance)
+  )
+  t.log(
+    'getStatus',
+    await router.getStatus(instance)
+  )
 
-  t.log(brief)
   t.pass()
 })

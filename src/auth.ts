@@ -4,14 +4,6 @@ import { CookieJar } from 'tough-cookie'
 import qs from 'qs'
 import * as defaults from './defaults.js'
 
-export interface IIptimeLoginOption {
-  routerName: string
-  routerIdentifier: string
-  initStatus: string
-  defaultPassword: string
-  isCaptchaEnabled: boolean
-}
-
 /**
  * Get available metadata from router login page
  *
@@ -43,15 +35,13 @@ export const getLoginOptions = async (
   const identifierMatch = /images2\/login_title\.(\w+)\.gif/.exec($('img[src*="login_title"]').attr('src') ?? '')
   const routerIdentifier = identifierMatch?.[1] ?? ''
 
-  const result: IIptimeLoginOption = {
+  return {
     routerName,
     routerIdentifier,
-    initStatus: $('input[name="init_status"]').attr('value') ?? '', // Not sure yet
+    initStatus: Number($('input[name="init_status"]').attr('value')) ?? 1, // If the router is initialized
     defaultPassword: $('input[name="default_passwd"]').attr('value') ?? '', // Not important but exists
     isCaptchaEnabled: $('input[name="captcha_on"]').attr('value') === '1' // Determines if captcha challenge is required
   }
-
-  return result
 }
 
 /**

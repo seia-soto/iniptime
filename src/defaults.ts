@@ -74,4 +74,20 @@ export namespace URIs {
    * The authorized main page of the router
    */
   export const mainView = 'sess-bin/login.cgi'
+
+  /**
+   * The authorized iframe source of the pages
+   */
+  export const serviceView = 'sess-bin/timepro.cgi'
 }
+
+/* eslint-disable no-unused-vars */
+export namespace services {
+  export enum EServiceCategory {
+    DATA = 'iframe',
+    FRAME = 'system',
+    NETWORK = 'netconf',
+    WIRELESS = 'wirelessconf'
+  }
+}
+/* eslint-enable no-unused-vars */

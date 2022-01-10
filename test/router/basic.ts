@@ -43,6 +43,10 @@ test('get information from basic preferences', async t => {
     'getWlanOptions',
     await router.network.getWlanOptions(instance)
   )
+  t.log(
+    'getConnectedMacAddresses',
+    await router.network.getConnectedMacAddresses(instance)
+  )
 
   t.pass()
 })

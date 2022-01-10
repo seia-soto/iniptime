@@ -276,3 +276,76 @@ export const getWlanConfiguration = async (
     isLdpcEnabled
   }
 }
+
+/**
+ * Get connected clients' IP and mac address
+ *
+ * @param instance The got instance to use
+ * @returns The array of connected IP and Mac address
+ */
+export const getConnectedMacAddresses = async (
+  instance: Got = defaults.instance
+) => {
+  const res = await instance
+    .post(defaults.URIs.serviceView, {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        // Referer check is present on the system
+        referer: defaults.URIs.serviceView +
+          `?${qs.stringify({
+            tmenu: defaults.services.EServiceCategory.NETWORK,
+            smenu: 'netconfmacsearch'
+          })}`
+      },
+      body: qs.stringify({
+        tmenu: defaults.services.EServiceCategory.DATA,
+        smenu: 'netconfmacsearch',
+        inputprefix: 'hw_dynamic',
+        act: 'refresh'
+      })
+    })
+    .text()
+
+  const results: {
+    mac: string
+    ip: string
+  }[] = []
+
+  // Grep mac addresses
+  let pattern = /">(\d+\.[\d.]+)/g
+  let match
+
+  for (;;) {
+    match = pattern.exec(res)
+
+    if (match === null) {
+      break
+    }
+
+    const [, ip] = match
+
+    results.push({
+      mac: '',
+      ip
+    })
+  }
+
+  // Grep mac addresses
+  pattern = /SelectMacFromPopup\(\\'hw_dynamic\\', \\'([\dA-F-]+)/g
+
+  for (let i = 0; true; i++) {
+    match = pattern.exec(res)
+
+    if (match === null) {
+      break
+    }
+
+    const [, mac] = match
+
+    if (results[i]) {
+      results[i].mac = mac
+    }
+  }
+
+  return results
+}

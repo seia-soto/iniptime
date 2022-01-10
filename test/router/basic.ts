@@ -6,7 +6,6 @@ import {
   router
 } from '../../src'
 import { EWlanBandType } from '../../src/router'
-import { TWlanIndex } from '../../src/router/network'
 
 const cookieJar = new CookieJar()
 const instance = defaults.instance.extend({

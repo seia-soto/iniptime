@@ -39,12 +39,12 @@ We're currently supporting following features:
     - *Not targeted, yet*
   - [ ] Administration utilities
     - [ ] Basic settings
-      - [ ] System summary (`router.getStatus`)
+      - [x] System summary (`router.getStatus`)
         - [x] Network connection uptime and status
         - [x] Hosted primary WLAN name and status
         - [x] DHCP server status and internal IP range
         - [x] System uptime and version
-        - [ ] Remote management status and port
+        - [x] Remote management status and port
       - [x] Internet connection settings (`router.network.getConfiguration`)
         - [x] Type of connection and status (*Dynamic wan mode only supported, yet*)
         - [x] External IP and connection metadata

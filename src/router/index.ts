@@ -150,6 +150,9 @@ export const getStatus = async (
     )
     .filter(line => line.length)
 
+  // Grep remote management port
+  const remoteManagementPort = Number((/(\d+)/.exec(externalManagementStatusText) || [])[0])
+
   const isConnected = connectionText.includes('정상적으로 연결')
   const isDynamic = connectionTypeText.includes('동적 IP')
   const isDhcpRunning = dhcpStatusText.includes('동작 중')
@@ -192,6 +195,7 @@ export const getStatus = async (
     connectionTime,
     routerUptime,
     ipRange,
+    remoteManagementPort,
     isConnected,
     isDynamic,
     isDhcpRunning,

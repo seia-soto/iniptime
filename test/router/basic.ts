@@ -5,6 +5,7 @@ import {
   defaults,
   router
 } from '../../src'
+import { getLoginOptions } from '../../src/auth'
 import { EWlanBandType } from '../../src/router'
 
 const cookieJar = new CookieJar()
@@ -13,10 +14,16 @@ const instance = defaults.instance.extend({
 })
 
 test('get information from basic preferences', async t => {
-  // login
+  const loginOptions = await getLoginOptions(instance)
+
   await auth.setSessionToken(
     cookieJar,
-    await auth.getLoginToken(instance)
+    await auth.getLoginToken(instance, {
+      initStatus: loginOptions.initStatus,
+      defaultPassword: loginOptions.defaultPassword,
+      username: 'admin',
+      password: 'password'
+    })
   )
 
   t.log(

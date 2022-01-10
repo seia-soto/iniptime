@@ -38,7 +38,7 @@ export const getLoginOptions = async (
   return {
     routerName,
     routerIdentifier,
-    initStatus: $('input[name="init_status"]').attr('value') ?? '', // Not sure yet
+    initStatus: Number($('input[name="init_status"]').attr('value')) ?? 1, // If the router is initialized
     defaultPassword: $('input[name="default_passwd"]').attr('value') ?? '', // Not important but exists
     isCaptchaEnabled: $('input[name="captcha_on"]').attr('value') === '1' // Determines if captcha challenge is required
   }

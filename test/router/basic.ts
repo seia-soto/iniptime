@@ -47,6 +47,10 @@ test('get information from basic preferences', async t => {
     'getConnectedMacAddresses',
     await router.network.getConnectedMacAddresses(instance)
   )
+  t.log(
+    'getWpsStatus',
+    await router.network.getWpsStatus(instance)
+  )
 
   t.pass()
 })

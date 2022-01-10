@@ -311,7 +311,7 @@ export const getConnectedMacAddresses = async (
     ip: string
   }[] = []
 
-  // Grep mac addresses
+  // Grep IP addresses
   let pattern = /">(\d+\.[\d.]+)/g
   let match
 
@@ -348,4 +348,100 @@ export const getConnectedMacAddresses = async (
   }
 
   return results
+}
+
+/**
+ * Get WPS and DFS status of WLANs
+ *
+ * @param instance The got instance to use
+ * @returns The WPS and DFS status
+ */
+export const getWpsStatus = async (
+  instance: Got = defaults.instance
+) => {
+  const res = await instance
+    .get(defaults.URIs.serviceView, {
+      headers: {
+        // Referer check is present on the system
+        referer: defaults.URIs.serviceView
+      },
+      searchParams: {
+        tmenu: defaults.services.EServiceCategory.DATA,
+        smenu: 'wlstatus'
+      }
+    })
+    .text()
+  const $ = cheerio.load(res)
+
+  // Second to ms transition
+  const wlan5gWpsStatus = $('input[name*="statusval5g"]').attr('value')
+  const wlan5gDfsStatus = $('input[name*="dfs_stat5g"]').attr('value')
+  const wlan5gDfsScanTimeLeft = Number($('input[name*="dfs_remain5g"]').attr('value')) * 1000
+  const wlan5gWpsActiveTimeLeft = Number($('input[name*="remaintime5g"]').attr('value')) * 1000
+  const wlan2gWpsStatus = $('input[name*="statusval2g"]').attr('value')
+  const wlan2gDfsStatus = $('input[name*="dfs_stat2g"]').attr('value')
+  const wlan2gDfsScanTimeLeft = Number($('input[name*="dfs_remain2g"]').attr('value')) * 1000
+  const wlan2gWpsActiveTimeLeft = Number($('input[name*="remaintime2g"]').attr('value')) * 1000
+
+  const isWlan5gOnline = $('input[name*="run5g"]').attr('value') === '1'
+  const isWlan2gOnline = $('input[name*="run2g"]').attr('value') === '1'
+
+  return {
+    [EWlanBandType.W2]: {
+      wps: {
+        status: wlan2gWpsStatus,
+        activeTimeLeft: wlan2gWpsActiveTimeLeft
+      },
+      dfs: {
+        status: wlan2gDfsStatus,
+        scanTimeLeft: wlan2gDfsScanTimeLeft
+      },
+      isOnline: isWlan2gOnline
+    },
+    [EWlanBandType.W5]: {
+      wps: {
+        status: wlan5gWpsStatus,
+        activeTimeLeft: wlan5gWpsActiveTimeLeft
+      },
+      dfs: {
+        status: wlan5gDfsStatus,
+        scanTimeLeft: wlan5gDfsScanTimeLeft
+      },
+      isOnline: isWlan5gOnline
+    }
+  }
+}
+
+/**
+ * Send WPS action request
+ *
+ * @param instance The got instance to use
+ * @param bandType The band type to send WPS request
+ * @param action The action
+ * @returns True if status code is 200
+ */
+export const setWpsStatus = async (
+  instance: Got = defaults.instance,
+  bandType: EWlanBandType,
+  action: 'start' | 'stop'
+) => {
+  const res = await instance
+    .post(defaults.URIs.serviceView, {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        // Referer check is present on the system
+        referer: defaults.URIs.serviceView
+      },
+      body: qs.stringify({
+        tmenu: defaults.services.EServiceCategory.DATA,
+        smenu: 'wpssubmit',
+        wlmode: {
+          [EWlanBandType.W2]: '2g',
+          [EWlanBandType.W5]: '5g'
+        }[bandType],
+        act: action
+      })
+    })
+
+  return res.statusCode === 200
 }

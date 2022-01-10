@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3-alpha.4](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.3...v0.0.3-alpha.4) (2022-01-10)
+
+
+### Features
+
+* add wlan configuration option fetcher ([90f582f](https://github.com/seia-soto/iniptime/commit/90f582ff9d96961199c4410dddf86aaacb79f493))
+* get connected clients' ip and mac addresses ([487f047](https://github.com/seia-soto/iniptime/commit/487f047fd26b712acd5cf441c13f56318de8a425))
+
 ### [0.0.3-alpha.3](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.2...v0.0.3-alpha.3) (2022-01-10)
 
 

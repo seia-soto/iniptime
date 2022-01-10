@@ -6,6 +6,7 @@ import {
   router
 } from '../../src'
 import { EWlanBandType } from '../../src/router'
+import { TWlanIndex } from '../../src/router/network'
 
 const cookieJar = new CookieJar()
 const instance = defaults.instance.extend({
@@ -33,11 +34,15 @@ test('get information from basic preferences', async t => {
   )
   t.log(
     `getWlanConfiguration (${EWlanBandType.W2})`,
-    await router.network.getWlanConfiguration(instance)
+    await router.network.getWlanConfiguration(instance, EWlanBandType.W2)
   )
   t.log(
     `getWlanConfiguration (${EWlanBandType.W5})`,
     await router.network.getWlanConfiguration(instance, EWlanBandType.W5)
+  )
+  t.log(
+    'getWlanOptions',
+    await router.network.getWlanOptions(instance)
   )
 
   t.pass()

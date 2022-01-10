@@ -49,7 +49,7 @@ We're currently supporting following features:
         - [x] Type of connection and status (*Dynamic wan mode only supported, yet*)
         - [x] External IP and connection metadata
         - [ ] MAC address search result from local network
-      - [ ] Wireless AP settings (`router.network.getWlanConfiguration`)
+      - [ ] Wireless AP settings (`router.network.getWlanConfiguration`, `router.network.getWlanOptions`)
         - [x] Wireless AP status and metadata
         - [x] 2GHz advanced settings
         - [x] 5GHz advanced settings

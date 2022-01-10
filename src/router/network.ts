@@ -57,8 +57,8 @@ export const getConfiguration = async (
   const wanMode = $('input[name*="wan_type"]:checked').attr('value') ?? EWanMode.DYNAMIC
 
   // Get shared metadata
-  const wanName = $('input[name*="wan"]').attr('value') // Mostly wan1
-  const interfaceName = $('input[name*="ifname"]').attr('value') // Mostly eth1
+  const wanName = $('input[name*="wan"]').attr('value') ?? 'wan1' // Mostly wan1
+  const interfaceName = $('input[name*="ifname"]').attr('value') ?? 'eth1' // Mostly eth1
   const isPasswordDisabled = $('input[name*="nopassword"]').attr('value') === '1'
 
   switch (wanMode) {
@@ -75,7 +75,7 @@ export const getConfiguration = async (
 
       const mac = getReflectedAddressFromElements($, 'input[name*="hw_dynamic"]', ':')
 
-      const mtu = $('input[name*="mtu.dynamic"]').attr('value')
+      const mtu = $('input[name*="mtu.dynamic"]').attr('value') ?? 1500
 
       // For user preference, these fields requires to be `checked` manually
       const isPrivateIpAllowed = $('input[name*="allow_private"]:checked').length > 0
@@ -122,10 +122,92 @@ export const getConfiguration = async (
 }
 
 /**
+ * Get wireless LAN specification tags
+ *
+ * @param instance The got instance to use
+ * @returns The available wireless LAN specification tags
+ */
+export const getWlanOptions = async (
+  instance: Got = defaults.instance
+) => {
+  const res = await instance
+    .get(defaults.URIs.serviceView, {
+      headers: {
+        // Referer check is present on the system
+        referer: defaults.URIs.serviceView +
+          `?${qs.stringify({
+            tmenu: defaults.services.EServiceCategory.WIRELESS,
+            smenu: 'basicsetup'
+          })}`
+      },
+      searchParams: {
+        tmenu: defaults.services.EServiceCategory.DATA,
+        smenu: 'extendsetup'
+      }
+    })
+    .text()
+  const specs = []
+  const channelWidths = []
+
+  const bandTypeMap = {
+    2: EWlanBandType.W2,
+    5: EWlanBandType.W5
+  }
+
+  // Get available wireless options
+  let pattern = /options(\d)g\[\d+\] = {'value':'(\d+)', 'text':'([\w,]+)'}/g
+  let match
+
+  for (;;) {
+    match = pattern.exec(res)
+
+    if (match === null) {
+      break
+    }
+
+    const [, bandType, identifier, text] = match
+
+    specs.push({
+      bandType: bandTypeMap[Number(bandType) as 2 | 5],
+      identifier,
+      text
+    })
+  }
+
+  // Get available channel widths
+  pattern = /chanwidth(\d)g\[\d+\] = {'value':'(\d+)', 'text':'([\w ,]+)'}/g
+
+  for (;;) {
+    match = pattern.exec(res)
+
+    if (match === null) {
+      break
+    }
+
+    const [, bandType, identifier, text] = match
+
+    channelWidths.push({
+      bandType: bandTypeMap[Number(bandType) as 2 | 5],
+      identifier,
+      text
+    })
+  }
+
+  return {
+    specs,
+    channelWidths
+  }
+}
+
+// 0 for default network, and 1 to 5 for guest networks
+export type TWlanIndex = 0 | 1 | 2 | 3 | 4 | 5
+
+/**
  * Get wireless configuration
  *
  * @param instance The got instance to use
  * @param bandType The band type of wireless LAN
+ * @param wlanIndex The index of hosted wlan, 0 for default network, and 1 to 5 for guest networks
  * @returns The wireless configuration
  */
 export const getWlanConfiguration = async (
@@ -145,6 +227,7 @@ export const getWlanConfiguration = async (
       searchParams: {
         tmenu: defaults.services.EServiceCategory.DATA,
         smenu: 'hiddenwlsetup',
+        // Actually, 2.4GHz configuration fetched with POST request but seems like the system is merging post params and query params
         wlmode: {
           [EWlanBandType.W2]: 0,
           [EWlanBandType.W5]: 1
@@ -154,16 +237,20 @@ export const getWlanConfiguration = async (
     .text()
   const $ = cheerio.load(res)
 
-  const ssid = $('input[name*="ssid"]').attr('value')
-  const controlChannel = $('input[name*="ctlchannel"]').attr('value')
-  const centralChannel = $('input[name*="cntchannel"]').attr('value')
-  const encryption = $('input[name*="personallist"]').attr('value')
-  const password = $('input[name*="wpapsk"]').attr('value')
-  const txPower = Number($('input[name*="txpower"]').attr('value')) / 100 // zero to one
-  const beaconInterval = Number($('input[name*="beacon"]').attr('value'))
-  const country = $('input[name*="country"]').attr('value')
-  const channelWidth = $('input[name*="channelwidth"]').attr('value')
-  const actualChannelWidth = $('input[name*="realchanwidth"]').attr('value')
+  const ssid = $('input[name*="ssid"]').attr('value') ?? ''
+  const activeSpecificationIdentifier = $('input[name*="wirelessmode"]').attr('value') ?? ''
+  const controlChannel = $('input[name*="ctlchannel"]').attr('value') ?? ''
+  const centralChannel = $('input[name*="cntchannel"]').attr('value') ?? ''
+  const encryption = $('input[name*="personallist"]').attr('value') ?? ''
+  const password = $('input[name*="wpapsk"]').attr('value') ?? ''
+  const txPower = Number($('input[name*="txpower"]').attr('value')) / 100 // Zero to one
+  const beaconInterval = Number($('input[name*="beacon"]').attr('value')) ?? 100
+  const country = $('input[name*="country"]').attr('value') ?? 'KR' // Default to KR, KR | US | EU
+  const channelWidth = $('input[name*="channelwidth"]').attr('value') ?? ''
+  const actualChannelWidth = $('input[name*="realchanwidth"]').attr('value') ?? ''
+
+  const index = $('input[name*="sidx"]').attr('value') ?? 0 as TWlanIndex
+  const uiIndex = $('input[name*="uiidx"]').attr('value') ?? 0 as TWlanIndex
 
   const isDfsSensoredChannel = $('input[name*="dfswarning"]').attr('value') === '1'
   const isBroadcasting = $('input[name*="broadcast"]').attr('value') === '1'
@@ -172,6 +259,7 @@ export const getWlanConfiguration = async (
   return {
     bandType,
     ssid,
+    activeSpecificationIdentifier,
     controlChannel,
     centralChannel,
     encryption,
@@ -181,6 +269,8 @@ export const getWlanConfiguration = async (
     country,
     channelWidth,
     actualChannelWidth,
+    index,
+    uiIndex,
     isDfsSensoredChannel,
     isBroadcasting,
     isLdpcEnabled

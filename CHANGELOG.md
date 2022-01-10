@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3-alpha.3](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.2...v0.0.3-alpha.3) (2022-01-10)
+
+
+### Features
+
+* get wlan config ([704801a](https://github.com/seia-soto/iniptime/commit/704801a311a067c304df7e04dd49093370745a81))
+
 ### [0.0.3-alpha.2](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.1...v0.0.3-alpha.2) (2022-01-09)
 
 

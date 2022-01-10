@@ -45,14 +45,14 @@ We're currently supporting following features:
         - [x] DHCP server status and internal IP range
         - [x] System uptime and version
         - [ ] Remote management status and port
-      - [x] Internet connection settings (`router.network.getConfiguration`)
+      - [ ] Internet connection settings (`router.network.getConfiguration`)
         - [x] Type of connection and status (*Dynamic wan mode only supported, yet*)
         - [x] External IP and connection metadata
         - [ ] MAC address search result from local network
-      - [ ] Wireless AP settings
-        - [ ] Wireless AP status and metadata
-        - [ ] 2GHz advanced settings
-        - [ ] 5GHz advanced settings
+      - [ ] Wireless AP settings (`router.network.getWlanConfiguration`)
+        - [x] Wireless AP status and metadata
+        - [x] 2GHz advanced settings
+        - [x] 5GHz advanced settings
         - [ ] Guest network controls
         - [ ] WPS controls
         - [ ] 802.1x security controls

@@ -2,6 +2,7 @@ import { Got } from 'got'
 import cheerio, { CheerioAPI } from 'cheerio'
 import qs from 'qs'
 import * as defaults from '../defaults.js'
+import { EWlanBandType } from './index.js'
 
 /* eslint-disable no-unused-vars */
 export enum EWanMode {
@@ -45,8 +46,8 @@ export const getConfiguration = async (
           })}`
       },
       searchParams: {
-        tmenu: defaults.services.EServiceCategory.NETCONF,
-        smenu: defaults.services.EServiceType.NETWORK_CONFIG
+        tmenu: defaults.services.EServiceCategory.NETWORK,
+        smenu: 'wansetup'
       }
     })
     .text()
@@ -117,5 +118,71 @@ export const getConfiguration = async (
         interfaceName
       }
     }
+  }
+}
+
+/**
+ * Get wireless configuration
+ *
+ * @param instance The got instance to use
+ * @param bandType The band type of wireless LAN
+ * @returns The wireless configuration
+ */
+export const getWlanConfiguration = async (
+  instance: Got = defaults.instance,
+  bandType: EWlanBandType = EWlanBandType.W2
+) => {
+  const res = await instance
+    .get(defaults.URIs.serviceView, {
+      headers: {
+        // Referer check is present on the system
+        referer: defaults.URIs.serviceView +
+          `?${qs.stringify({
+            tmenu: defaults.services.EServiceCategory.WIRELESS,
+            smenu: 'basicsetup'
+          })}`
+      },
+      searchParams: {
+        tmenu: defaults.services.EServiceCategory.DATA,
+        smenu: 'hiddenwlsetup',
+        wlmode: {
+          [EWlanBandType.W2]: 0,
+          [EWlanBandType.W5]: 1
+        }[bandType]
+      }
+    })
+    .text()
+  const $ = cheerio.load(res)
+
+  const ssid = $('input[name*="ssid"]').attr('value')
+  const controlChannel = $('input[name*="ctlchannel"]').attr('value')
+  const centralChannel = $('input[name*="cntchannel"]').attr('value')
+  const encryption = $('input[name*="personallist"]').attr('value')
+  const password = $('input[name*="wpapsk"]').attr('value')
+  const txPower = Number($('input[name*="txpower"]').attr('value')) / 100 // zero to one
+  const beaconInterval = Number($('input[name*="beacon"]').attr('value'))
+  const country = $('input[name*="country"]').attr('value')
+  const channelWidth = $('input[name*="channelwidth"]').attr('value')
+  const actualChannelWidth = $('input[name*="realchanwidth"]').attr('value')
+
+  const isDfsSensoredChannel = $('input[name*="dfswarning"]').attr('value') === '1'
+  const isBroadcasting = $('input[name*="broadcast"]').attr('value') === '1'
+  const isLdpcEnabled = $('input[name*="ldpc"]').attr('value') === '1'
+
+  return {
+    bandType,
+    ssid,
+    controlChannel,
+    centralChannel,
+    encryption,
+    password,
+    txPower,
+    beaconInterval,
+    country,
+    channelWidth,
+    actualChannelWidth,
+    isDfsSensoredChannel,
+    isBroadcasting,
+    isLdpcEnabled
   }
 }

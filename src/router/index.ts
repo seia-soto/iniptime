@@ -117,7 +117,7 @@ export const getStatus = async (
       },
       searchParams: {
         tmenu: defaults.services.EServiceCategory.DATA,
-        smenu: defaults.services.EServiceType.SYSTEM_STATUS
+        smenu: 'system_info_status'
       }
     })
     .text()

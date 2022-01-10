@@ -86,12 +86,8 @@ export namespace services {
   export enum EServiceCategory {
     DATA = 'iframe',
     FRAME = 'system',
-    NETCONF = 'netconf'
-  }
-
-  export enum EServiceType {
-    SYSTEM_STATUS = 'system_info_status',
-    NETWORK_CONFIG = 'wansetup'
+    NETWORK = 'netconf',
+    WIRELESS = 'wirelessconf'
   }
 }
 /* eslint-enable no-unused-vars */

@@ -5,6 +5,7 @@ import * as defaults from '../defaults.js'
 import { parseDatetime } from '../utils.js'
 
 // export all
+export * as firmware from './firmware.js'
 export * as network from './network.js'
 
 /**

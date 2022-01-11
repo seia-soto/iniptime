@@ -86,6 +86,7 @@ export namespace services {
   export enum EServiceCategory {
     DATA = 'iframe',
     FRAME = 'system',
+    SYSTEM = 'sysconf',
     NETWORK = 'netconf',
     WIRELESS = 'wirelessconf'
   }

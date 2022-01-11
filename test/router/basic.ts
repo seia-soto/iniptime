@@ -1,4 +1,5 @@
-import test from 'ava'
+import anyTest, { TestFn } from 'ava'
+import { Got } from 'got'
 import { CookieJar } from 'tough-cookie'
 import {
   auth,
@@ -9,12 +10,18 @@ import { getLoginOptions } from '../../src/auth'
 import { EWlanBandType } from '../../src/router'
 import { TWlanIndex } from '../../src/router/network'
 
-const cookieJar = new CookieJar()
-const instance = defaults.instance.extend({
-  cookieJar
-})
+interface IExecutionContext {
+  instance: Got
+}
 
-test('get information from basic preferences', async t => {
+const test = anyTest as TestFn<IExecutionContext>
+
+test.beforeEach('get authorized client', async t => {
+  const cookieJar = new CookieJar()
+  const instance = defaults.instance.extend({
+    cookieJar
+  })
+
   const loginOptions = await getLoginOptions(instance)
 
   await auth.setSessionToken(
@@ -27,51 +34,64 @@ test('get information from basic preferences', async t => {
     })
   )
 
+  t.context.instance = instance
+})
+
+test('get information from basic preferences', async t => {
   t.log(
     'getBriefing',
-    await router.getBriefing(instance)
+    await router.getBriefing(t.context.instance)
   )
   t.log(
     'getStatus',
-    await router.getStatus(instance)
+    await router.getStatus(t.context.instance)
   )
   t.log(
     'getConfiguration',
-    await router.network.getConfiguration(instance)
+    await router.network.getConfiguration(t.context.instance)
   )
   t.log(
     `getWlanConfiguration (${EWlanBandType.W2})`,
-    await router.network.getWlanConfiguration(instance, EWlanBandType.W2)
+    await router.network.getWlanConfiguration(t.context.instance, EWlanBandType.W2)
   )
   t.log(
     `getWlanConfiguration (${EWlanBandType.W5})`,
-    await router.network.getWlanConfiguration(instance, EWlanBandType.W5)
+    await router.network.getWlanConfiguration(t.context.instance, EWlanBandType.W5)
   )
 
   for (let i = 1; i <= 3; i++) {
     t.log(
       `getWlanConfiguration (${EWlanBandType.W2} — Guest ${i})`,
-      await router.network.getWlanConfiguration(instance, EWlanBandType.W2, i as TWlanIndex)
+      await router.network.getWlanConfiguration(t.context.instance, EWlanBandType.W2, i as TWlanIndex)
     )
   }
   for (let i = 1; i <= 3; i++) {
     t.log(
       `getWlanConfiguration (${EWlanBandType.W5} — Guest ${i})`,
-      await router.network.getWlanConfiguration(instance, EWlanBandType.W5, i as TWlanIndex)
+      await router.network.getWlanConfiguration(t.context.instance, EWlanBandType.W5, i as TWlanIndex)
     )
   }
 
   t.log(
     'getWlanOptions',
-    await router.network.getWlanOptions(instance)
+    await router.network.getWlanOptions(t.context.instance)
   )
   t.log(
     'getConnectedMacAddresses',
-    await router.network.getConnectedMacAddresses(instance)
+    await router.network.getConnectedMacAddresses(t.context.instance)
   )
   t.log(
     'getWpsStatus',
-    await router.network.getWpsStatus(instance)
+    await router.network.getWpsStatus(t.context.instance)
+  )
+
+  t.pass()
+})
+
+test('get information about firmware', async t => {
+  t.log(
+    'getMetadata',
+    await router.firmware.getMetadata(t.context.instance)
   )
 
   t.pass()

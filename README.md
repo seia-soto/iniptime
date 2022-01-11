@@ -4,8 +4,10 @@ A JavaScript compatible ipTIME router controllable interface library.
 
 ## Table of Contents
 
-- [TypeDoc](https://iniptime.seia.io)
+- [TypeDoc (master)](https://iniptime.seia.io)
 - [Usage](#usage)
+  - [Features](#features)
+  - [Authentication](#authentication)
 - [Environment](#environment)
 - [LICENSE](#license)
 
@@ -17,6 +19,36 @@ Note that I build this library with following router:
 - v14.11.0 from official channel
 
 # Usage
+
+You can install this library from NPM and GitHub.
+Note that we only provide ESM version.
+
+```sh
+# From NPM
+npm install --save iniptime
+
+## using Yarn
+yarn add iniptime
+
+# From GitHub
+yarn add https://github.com/seia-soto/iniptime
+```
+
+Note that TypeDoc is following `master` branch of this repository, to match version:
+
+```sh
+git clone https://github.com/seia-soto/iniptime
+
+# After moving to a branch or tag, run:
+cd iniptime && yarn && yarn build:docs && yarn dlx serve docs
+```
+
+> **For authentication before using the library, please see [authentication section](#authentication).**
+
+1. Find out the function name in [features section](#features) to do.
+2. Get return type and arguments from TypeDoc.
+
+## Features
 
 We're currently supporting following features:
 

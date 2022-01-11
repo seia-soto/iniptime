@@ -37,7 +37,7 @@ test.beforeEach('get authorized client', async t => {
   t.context.instance = instance
 })
 
-test('get information from basic preferences', async t => {
+test('router', async t => {
   t.log(
     'getBriefing',
     await router.getBriefing(t.context.instance)
@@ -46,6 +46,11 @@ test('get information from basic preferences', async t => {
     'getStatus',
     await router.getStatus(t.context.instance)
   )
+
+  t.pass()
+})
+
+test('router.network', async t => {
   t.log(
     'getConfiguration',
     await router.network.getConfiguration(t.context.instance)
@@ -88,10 +93,14 @@ test('get information from basic preferences', async t => {
   t.pass()
 })
 
-test('get information about firmware', async t => {
+test('firmware', async t => {
   t.log(
-    'getMetadata',
-    await router.firmware.getMetadata(t.context.instance)
+    'getStatus',
+    await router.firmware.getStatus(t.context.instance)
+  )
+  t.log(
+    'getRemoteStatus',
+    await router.firmware.getRemoteStatus(t.context.instance)
   )
 
   t.pass()

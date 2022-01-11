@@ -58,8 +58,8 @@ We're currently supporting following features:
         - [x] 802.1x security controls
         - [ ] Result of network channel scanner
       - [ ] Firmware settings
-        - [x] Current firmware metadata (`router.firmware.getMetadata`)
-        - [ ] Automatic upgrade
+        - [x] Current firmware metadata (`router.firmware.getStatus`)
+        - [x] Automatic upgrade (`router.firmware.getRemoteStatus`, `router.firmware.upgrade`)
         - [ ] Upgrade with file
       - [ ] Easy Mesh wizard
         - *Not targeted, yet*

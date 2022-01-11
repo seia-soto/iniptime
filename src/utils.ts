@@ -55,3 +55,13 @@ export const parseDatetime = (
 
   return add(new Date(0), mapper).getTime()
 }
+
+/**
+ * Sleep for ms
+ *
+ * @param time Time to sleep
+ * @returns Nothing
+ */
+export const sleep = (time: number) => new Promise(resolve => {
+  setTimeout(() => resolve(null), time)
+})

@@ -199,15 +199,15 @@ export const getWlanOptions = async (
   }
 }
 
-// 0 for default network, and 1 to 5 for guest networks
-export type TWlanIndex = 0 | 1 | 2 | 3 | 4 | 5
+// 0 for default network, and 1 to 3 for guest networks
+export type TWlanIndex = 0 | 1 | 2 | 3
 
 /**
  * Get wireless configuration
  *
  * @param instance The got instance to use
  * @param bandType The band type of wireless LAN
- * @param wlanIndex The index of hosted wlan, 0 for default network, and 1 to 5 for guest networks
+ * @param wlanIndex The index of hosted wlan, 0 for default network, and 1 to 3 for guest networks
  * @returns The wireless configuration
  */
 export const getWlanConfiguration = async (
@@ -265,7 +265,10 @@ export const getWlanConfiguration = async (
   const controlChannel = $('input[name*="ctlchannel"]').attr('value') ?? ''
   const centralChannel = $('input[name*="cntchannel"]').attr('value') ?? ''
   const encryption = $('input[name*="personallist"]').attr('value') ?? ''
-  const password = $('input[name*="wpapsk"]').attr('value') ?? ''
+  const password =
+    $('input[name*="wpapsk"]').attr('value') ??
+    $('input[name*="wepkey"]').attr('value') ?? // Password fallback for WEB encryption
+    ''
   const txPower = Number($('input[name*="txpower"]').attr('value')) / 100 // Zero to one
   const beaconInterval = Number($('input[name*="beacon"]').attr('value')) ?? 100
   const country = $('input[name*="country"]').attr('value') ?? 'KR' // Default to KR, KR | US | EU
@@ -275,9 +278,40 @@ export const getWlanConfiguration = async (
   const index = $('input[name*="sidx"]').attr('value') ?? 0 as TWlanIndex
   const uiIndex = $('input[name*="uiidx"]').attr('value') ?? 0 as TWlanIndex
 
+  const isOnline = $('input[name*="run"]').attr('value') === '1'
+  const isChannelDisabled = $('input[name*="chandisable"]').attr('value') === '1'
   const isDfsSensoredChannel = $('input[name*="dfswarning"]').attr('value') === '1'
   const isBroadcasting = $('input[name*="broadcast"]').attr('value') === '1'
   const isLdpcEnabled = $('input[name*="ldpc"]').attr('value') === '1'
+
+  /**
+   * Draft: Possible matches
+   *  - isMimoAntena
+   *  - isMimoEnabled
+   *
+   * $('input[name*="mimoant"]').attr('value') === '1'
+   */
+
+  /**
+   * Draft: Possible matches
+   *  - isMbssPolicyEnabled
+   *
+   * $('input[name*="mbsspolicy"').attr('value') === '1'
+   */
+
+  // Enterprise configuration
+  const enterprise = {
+    encryption: $('input[name*="enterpriselist"]').attr('value') ?? ''
+  }
+
+  // Radius server configuration
+  const radius = {
+    address: $('input[name*="radiusserver"]').attr('value') ?? '',
+    port: $('input[name*="radiusport"]').attr('value') ?? '',
+    password: $('input[name*="radiussecret"]').attr('value') ?? ''
+  }
+
+  const isEnterprisePolicyEnabled = $('input[name*="useenterprise"]').attr('value') === '1'
 
   return {
     bandType,
@@ -294,9 +328,14 @@ export const getWlanConfiguration = async (
     actualChannelWidth,
     index,
     uiIndex,
+    enterprise,
+    radius,
+    isOnline,
+    isChannelDisabled,
     isDfsSensoredChannel,
     isBroadcasting,
-    isLdpcEnabled
+    isLdpcEnabled,
+    isEnterprisePolicyEnabled
   }
 }
 

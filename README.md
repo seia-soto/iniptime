@@ -55,7 +55,7 @@ We're currently supporting following features:
         - [x] 5GHz advanced settings
         - [x] Guest network controls
         - [x] WPS controls (`router.network.getWpsStatus`, `router.network.setWpsStatus`)
-        - [ ] 802.1x security controls
+        - [x] 802.1x security controls
         - [ ] Result of network channel scanner
       - [ ] Firmware settings
         - [ ] Current firmware metadata

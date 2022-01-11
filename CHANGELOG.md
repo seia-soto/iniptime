@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3-alpha.7](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.6...v0.0.3-alpha.7) (2022-01-11)
+
+
+### Features
+
+* automatic software upgrade ([ec2b966](https://github.com/seia-soto/iniptime/commit/ec2b966d6273efe173c98c9f411b0facf9ce99ce))
+* get firmware metadata ([743b620](https://github.com/seia-soto/iniptime/commit/743b6204a2fac9fbf0a644ae562cc5e721e877aa))
+
 ### [0.0.3-alpha.6](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.5...v0.0.3-alpha.6) (2022-01-11)
 
 

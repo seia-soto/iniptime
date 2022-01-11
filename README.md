@@ -53,7 +53,7 @@ We're currently supporting following features:
         - [x] Wireless AP status and metadata
         - [x] 2GHz advanced settings
         - [x] 5GHz advanced settings
-        - [ ] Guest network controls
+        - [x] Guest network controls
         - [x] WPS controls (`router.network.getWpsStatus`, `router.network.setWpsStatus`)
         - [ ] 802.1x security controls
         - [ ] Result of network channel scanner

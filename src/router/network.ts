@@ -212,28 +212,51 @@ export type TWlanIndex = 0 | 1 | 2 | 3 | 4 | 5
  */
 export const getWlanConfiguration = async (
   instance: Got = defaults.instance,
-  bandType: EWlanBandType = EWlanBandType.W2
+  bandType: EWlanBandType = EWlanBandType.W2,
+  wlanIndex: TWlanIndex = 0
 ) => {
-  const res = await instance
-    .get(defaults.URIs.serviceView, {
-      headers: {
-        // Referer check is present on the system
-        referer: defaults.URIs.serviceView +
-          `?${qs.stringify({
-            tmenu: defaults.services.EServiceCategory.WIRELESS,
-            smenu: 'basicsetup'
-          })}`
-      },
-      searchParams: {
-        tmenu: defaults.services.EServiceCategory.DATA,
-        smenu: 'hiddenwlsetup',
-        // Actually, 2.4GHz configuration fetched with POST request but seems like the system is merging post params and query params
-        wlmode: {
-          [EWlanBandType.W2]: 0,
-          [EWlanBandType.W5]: 1
-        }[bandType]
-      }
+  // The following data is shared
+  const sharedPayload = {
+    tmenu: defaults.services.EServiceCategory.DATA,
+    smenu: 'hiddenwlsetup',
+    // Actually, 2.4GHz configuration fetched with POST request but seems like the system is merging post params and query params
+    wlmode: {
+      [EWlanBandType.W2]: 0,
+      [EWlanBandType.W5]: 1
+    }[bandType]
+  }
+
+  // Define dynamic variables
+  let method: 'get' | 'post' = 'get'
+  let body: string | undefined
+
+  if (wlanIndex > 0) {
+    // Use POST instead of GET
+    method = 'post'
+
+    // Inject additional data for guest network query
+    body = qs.stringify({
+      // Add shared payload
+      ...sharedPayload,
+      action: 'changebssid',
+      sidx: wlanIndex,
+      uiidx: wlanIndex
     })
+  }
+
+  const res = await instance[method](defaults.URIs.serviceView, {
+    headers: {
+      // Referer check is present on the system
+      referer: defaults.URIs.serviceView +
+        `?${qs.stringify({
+          tmenu: defaults.services.EServiceCategory.WIRELESS,
+          smenu: 'basicsetup'
+        })}`
+    },
+    // There is no problem to remove shared payload on guest network request
+    searchParams: sharedPayload,
+    body
+  })
     .text()
   const $ = cheerio.load(res)
 

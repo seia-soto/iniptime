@@ -47,6 +47,10 @@ test('get information from basic preferences', async t => {
     await router.network.getWlanConfiguration(instance, EWlanBandType.W5)
   )
   t.log(
+    'getWlanConfiguration (Guest 1)',
+    await router.network.getWlanConfiguration(instance, EWlanBandType.W5, 1)
+  )
+  t.log(
     'getWlanOptions',
     await router.network.getWlanOptions(instance)
   )

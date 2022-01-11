@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3-alpha.6](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.5...v0.0.3-alpha.6) (2022-01-11)
+
+
+### Features
+
+* add enterprise and radius configuration ([1a7813b](https://github.com/seia-soto/iniptime/commit/1a7813b60efbcdf500f0925882407db95dde218b))
+* guest network query ([4d4700e](https://github.com/seia-soto/iniptime/commit/4d4700eaccc188e682c7cca94d1dcec6ee4e00f0))
+
 ### [0.0.3-alpha.5](https://github.com/seia-soto/iniptime/compare/v0.0.3-alpha.4...v0.0.3-alpha.5) (2022-01-10)
 
 

@@ -52,46 +52,46 @@ cd iniptime && yarn && yarn build:docs && yarn dlx serve docs
 
 We're currently supporting following features:
 
-- [x] Unauthorized scope
-  - [x] Login (`auth.getLoginToken`)
-    - [x] Login with credentials
-    - [x] Login with captcha (`auth.getCaptchaImage`)
-  - [x] Router metadata (`auth.getLoginOptions`, `auth.getCaptchaOptions`)
-    - [x] Name
-    - [x] Version
-    - [x] SKU Identifier
-    - [x] Initialization status
-    - [x] Captcha status
+- [X] Unauthorized scope
+  - [X] Login (`auth.getLoginToken`)
+    - [X] Login with credentials
+    - [X] Login with captcha (`auth.getCaptchaImage`)
+  - [X] Router metadata (`auth.getLoginOptions`, `auth.getCaptchaOptions`)
+    - [X] Name
+    - [X] Version
+    - [X] SKU Identifier
+    - [X] Initialization status
+    - [X] Captcha status
 - [ ] Authorized scope
   - [ ] Entry page (`router.getBriefing`)
-    - [x] External IP and connection summary of router
-    - [x] Version of router
+    - [X] External IP and connection summary of router
+    - [X] Version of router
     - [ ] Result of ipTIME scanner
   - [ ] Setup wizard
     - *Not targeted, yet*
   - [ ] Administration utilities
     - [ ] Basic settings
-      - [x] System summary (`router.getStatus`)
-        - [x] Network connection uptime and status
-        - [x] Hosted primary WLAN name and status
-        - [x] DHCP server status and internal IP range
-        - [x] System uptime and version
-        - [x] Remote management status and port
-      - [x] Internet connection settings (`router.network.getConfiguration`)
-        - [x] Type of connection and status (*Dynamic wan mode only supported, yet*)
-        - [x] External IP and connection metadata
-        - [x] MAC address search result from local network (`router.network.getConnectedMacAddresses`)
+      - [X] System summary (`router.getStatus`)
+        - [X] Network connection uptime and status
+        - [X] Hosted primary WLAN name and status
+        - [X] DHCP server status and internal IP range
+        - [X] System uptime and version
+        - [X] Remote management status and port
+      - [X] Internet connection settings (`router.network.getConfiguration`)
+        - [X] Type of connection and status (*Dynamic wan mode only supported, yet*)
+        - [X] External IP and connection metadata
+        - [X] MAC address search result from local network (`router.network.getConnectedMacAddresses`)
       - [ ] Wireless AP settings (`router.network.getWlanConfiguration`, `router.network.getWlanOptions`)
-        - [x] Wireless AP status and metadata
-        - [x] 2GHz advanced settings
-        - [x] 5GHz advanced settings
-        - [x] Guest network controls
-        - [x] WPS controls (`router.network.getWpsStatus`, `router.network.setWpsStatus`)
-        - [x] 802.1x security controls
+        - [X] Wireless AP status and metadata
+        - [X] 2GHz advanced settings
+        - [X] 5GHz advanced settings
+        - [X] Guest network controls
+        - [X] WPS controls (`router.network.getWpsStatus`, `router.network.setWpsStatus`)
+        - [X] 802.1x security controls
         - [ ] Result of network channel scanner
       - [ ] Firmware settings
-        - [x] Current firmware metadata (`router.firmware.getStatus`)
-        - [x] Automatic upgrade (`router.firmware.getRemoteStatus`, `router.firmware.upgrade`)
+        - [X] Current firmware metadata (`router.firmware.getStatus`)
+        - [X] Automatic upgrade (`router.firmware.getRemoteStatus`, `router.firmware.upgrade`)
         - [ ] Upgrade with file
       - [ ] Easy Mesh wizard
         - *Not targeted, yet*
@@ -206,7 +206,7 @@ const instance = defaults.instance.extend({
   cookieJar
 })
 
-const loginOptions = await auth.getLoginToken(instance)
+const loginOptions = await auth.getLoginOptions(instance)
 
 // Update session cookie with `auth.setSessionToken`.
 await auth.setSessionToken(
@@ -226,15 +226,15 @@ const instance = defaults.instance.extend({
   cookieJar
 })
 
-const loginOptions = await auth.getLoginToken(instance)
+const loginOptions = await auth.getLoginOptions(instance)
 
 // Update session cookie with `auth.setSessionToken`.
 await auth.setSessionToken(
   cookieJar,
   await auth.getLoginToken(instance, {
     initStatus: loginOptions.initStatus,
-    'username',
-    'password',
+    username: 'username',
+    password: 'password',
     defaultPassword: loginOptions.defaultPassword
   })
 )
@@ -251,7 +251,7 @@ const instance = defaults.instance.extend({
   cookieJar
 })
 
-const loginOptions = await auth.getLoginToken(instance)
+const loginOptions = await auth.getLoginOptions(instance)
 
 if (!loginOptions.isCaptchaEnabled) {
   throw new Error('Captcha is not enabled!')
@@ -268,8 +268,8 @@ await auth.setSessionToken(
   cookieJar,
   await auth.getLoginToken(instance, {
     initStatus: loginOptions.initStatus,
-    'username',
-    'password',
+    username: 'username',
+    password: 'password',
     defaultPassword: loginOptions.defaultPassword,
     // Provide captcha information.
     captcha: {
